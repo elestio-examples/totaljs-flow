@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  nginx:
+  flow:
     image: totalplatform/flow:latest
     restart: always
     ports:
