@@ -27,5 +27,8 @@ sed -i "s@$prevLogin@root@g" ./databases/preferences.json;
 sed -i "s@$prevPassword\",@$newPassword\"@g" ./databases/preferences.json;
 sed -i "s@\"raw\": \"$raw\"@@g" ./databases/preferences.json;
 
+echo "Waiting for software to be ready ...";
+sleep 30s;
+
 docker-compose down;
 docker-compose up -d;
