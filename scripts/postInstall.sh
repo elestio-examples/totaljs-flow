@@ -10,8 +10,6 @@ config=$(cat ./databases/config.json);
 cookie_secret=$(echo $config | jq -r '.cookie_secret');
 
 prevLogin=$(echo $pref | jq -r '.user.login' );
-echo "prevLogin";
-echo $prevLogin
 
 prevRaw=$(echo $pref | jq -r '.user.raw' );
 prevPasswordTemp=$(echo -n $prevRaw$cookie_secret | sha256sum);
@@ -20,8 +18,6 @@ prevPassword=${prevPasswordTemp:0:64};
 newRaw=${ADMIN_PASSWORD}
 newPasswordTemp=$(echo -n $newRaw$cookie_secret | sha256sum);
 newPassword=${newPasswordTemp:0:64};
-echo "newPassword"
-echo $newPassword
 
 sed -i "s@$prevLogin@root@g" ./databases/preferences.json;
 sed -i "s@$prevPassword\",@$newPassword\"@g" ./databases/preferences.json;
