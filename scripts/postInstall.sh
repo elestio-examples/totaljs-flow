@@ -2,19 +2,26 @@
 set -o allexport; source .env; set +o allexport;
 
 #wait until the server is ready
-echo "Waiting for software to be ready ..."
-sleep 10s;
+echo "Waiting for software to be ready ...";
+sleep 30s;
 
-# url=$(curl -i https://${DOMAIN})
-#     echo $url > url.txt
+pref=$(cat ./databases/preferences.json);
+config=$(cat ./databases/config.json);
+cookie_secret=$(echo $config | jq -r '.cookie_secret');
 
-# target=$(docker-compose port flow 8000)
+prevLogin=$(echo $pref | jq -r '.user.login' );
 
-# curl http://${target}/fapi/password/ \
-#   -H 'accept: text/plain, */*; q=0.01' \
-#   -H 'accept-language: fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7,he;q=0.6' \
-#   -H 'content-type: application/json; charset=UTF-8' \
-#   -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36' \
-#   -H 'x-requested-with: XMLHttpRequest' \
-#   --data-raw '{"login":"'${ADMIN_EMAIL}'","password":"'${ADMIN_PASSWORD}'","passwordreply":"'${ADMIN_PASSWORD}'"}' \
-#   --compressed
+prevRaw=$(echo $pref | jq -r '.user.raw' );
+prevPasswordTemp=$(echo -n $prevRaw$cookie_secret | sha256sum);
+prevPassword=${prevPasswordTemp:0:64};
+
+newRaw=${ADMIN_PASSWORD}
+newPasswordTemp=$(echo -n $newRaw$cookie_secret | sha256sum);
+newPassword=${newPasswordTemp:0:64};
+
+sed -i "s@$prevLogin@root@g" ./databases/preferences.json;
+sed -i "s@$prevPassword\",@$newPassword\"@g" ./databases/preferences.json;
+sed -i "s@\"raw\": \"$raw\"@@g" ./databases/preferences.json;
+
+docker-compose down;
+docker-compose up -d;
