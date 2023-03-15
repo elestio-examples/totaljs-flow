@@ -3,7 +3,7 @@ set -o allexport; source .env; set +o allexport;
 
 #wait until the server is ready
 echo "Waiting for software to be ready ...";
-sleep 30s;
+sleep 10s;
 
 pref=$(cat ./databases/preferences.json);
 config=$(cat ./databases/config.json);
@@ -25,10 +25,7 @@ echo $newPassword
 
 sed -i "s@$prevLogin@root@g" ./databases/preferences.json;
 sed -i "s@$prevPassword\",@$newPassword\"@g" ./databases/preferences.json;
-sed -i "s@\"raw\": \"$raw\"@@g" ./databases/preferences.json;
-
-echo "Waiting for software to be ready ...";
-sleep 30s;
+sed -i "s@\"raw\": \"$prevRaw\"@@g" ./databases/preferences.json;
 
 docker-compose down;
 docker-compose up -d;
