@@ -8,12 +8,8 @@ ports:
     path: "/"
     isAuth: false
 environments:
-  - key: "ADMIN_EMAIL"
-    value: "[EMAIL]"
   - key: "ADMIN_PASSWORD"
     value: "ramdom_password"
-  - key: "DOMAIN"
-    value: "[CI_CI_DOMAIN]"
 
 config:
   runTime: "dockerCompose"
