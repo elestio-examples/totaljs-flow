@@ -10,7 +10,7 @@ Deploy Totaljs/Flow server with CI/CD on Elestio
 
 # Once deployed ...
 
-You can can open Totaljs/Flow here:
+You can open Totaljs/Flow here:
 
     URL: https://[CI_CD_DOMAIN]
     login: root
