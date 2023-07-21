@@ -2,7 +2,7 @@ version: "3"
 
 services:
   flow:
-    image: totalplatform/flow::${SOFTWARE_VERSION_TAG}
+    image: totalplatform/flow:${SOFTWARE_VERSION_TAG}
     restart: always
     ports:
       - 172.17.0.1:6433:8000
